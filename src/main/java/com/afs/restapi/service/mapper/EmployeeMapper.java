@@ -3,7 +3,6 @@ package com.afs.restapi.service.mapper;
 import com.afs.restapi.entity.Employee;
 import com.afs.restapi.service.dto.EmployeeRequest;
 import com.afs.restapi.service.dto.EmployeeResponse;
-import com.fasterxml.jackson.databind.util.BeanUtil;
 import org.springframework.beans.BeanUtils;
 
 public class EmployeeMapper {
