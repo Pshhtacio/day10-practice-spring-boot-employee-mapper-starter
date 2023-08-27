@@ -56,13 +56,15 @@ class CompanyApiTest {
 
     @Test
     void should_find_company_by_id() throws Exception {
-        Company company = companyRepository.save(getCompanyOOCL());
-        Employee employee = employeeRepository.save(getEmployee(company));
+        CompanyRequest companyRequest = new CompanyRequest(new Company(null, "Facebook"));
+        Company companyEntity = CompanyMapper.toEntity(companyRequest);
+        CompanyResponse companyResponse = CompanyMapper.toResponse(companyRepository.save(companyEntity));
+        Employee employee = employeeRepository.save(getEmployee(companyEntity));
 
-        mockMvc.perform(get("/companies/{id}", company.getId()))
+        mockMvc.perform(get("/companies/{id}", companyResponse.getId()))
                 .andExpect(MockMvcResultMatchers.status().is(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(company.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(company.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(companyResponse.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(companyResponse.getName()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employees.length()").value(1))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].id").value(1L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].name").value(employee.getName()))
