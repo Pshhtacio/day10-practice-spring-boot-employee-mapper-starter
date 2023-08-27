@@ -1,5 +1,7 @@
 package com.afs.restapi.service.dto;
 
+import com.afs.restapi.entity.Employee;
+
 public class EmployeeRequest {
     private String name;
     private Integer age;
@@ -13,6 +15,14 @@ public class EmployeeRequest {
         this.gender = gender;
         this.salary = salary;
         this.companyId = companyId;
+    }
+
+    public EmployeeRequest(Employee employee) {
+        this.name = employee.getName();
+        this.age = employee.getAge();
+        this.gender = employee.getGender();
+        this.salary = employee.getSalary();
+        this.companyId = employee.getCompanyId();
     }
 
     public String getName() {
