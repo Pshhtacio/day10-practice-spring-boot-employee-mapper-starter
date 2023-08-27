@@ -113,7 +113,7 @@ class EmployeeApiTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(employeeResponse.getName()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(employeeResponse.getAge()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value(employeeResponse.getGender()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(employeeResponse.getSalary()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.salary").doesNotExist());
     }
     @Test
     void should_find_employees_by_page() throws Exception {
