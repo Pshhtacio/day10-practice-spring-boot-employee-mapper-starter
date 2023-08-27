@@ -8,7 +8,6 @@ import com.afs.restapi.repository.EmployeeRepository;
 import com.afs.restapi.service.dto.CompanyRequest;
 import com.afs.restapi.service.dto.CompanyResponse;
 import com.afs.restapi.service.mapper.CompanyMapper;
-import com.afs.restapi.service.mapper.EmployeeMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -29,9 +28,9 @@ public class CompanyService {
         return companyRepository.findAll();
     }
 
-    public Company findById(Long id) {
-        return companyRepository.findById(id)
-                .orElseThrow(CompanyNotFoundException::new);
+    public CompanyResponse findById(Long id) {
+        Company company = companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
+        return CompanyMapper.toResponse(company);
     }
 
     public List<Company> findByPage(Integer pageNumber, Integer pageSize) {
@@ -40,10 +39,12 @@ public class CompanyService {
     }
 
     public void update(Long id, Company company) {
+        CompanyRequest companyRequest = new CompanyRequest(company);
+        Company updatedCompany = CompanyMapper.toEntity(companyRequest);
         Company toBeUpdatedCompany = companyRepository.findById(id)
                 .orElseThrow(CompanyNotFoundException::new);
-        toBeUpdatedCompany.setName(company.getName());
-        companyRepository.save(toBeUpdatedCompany);
+        toBeUpdatedCompany.setName(updatedCompany.getName());
+        CompanyMapper.toResponse(companyRepository.save(toBeUpdatedCompany));
     }
 
     public CompanyResponse create(CompanyRequest companyRequest) {
