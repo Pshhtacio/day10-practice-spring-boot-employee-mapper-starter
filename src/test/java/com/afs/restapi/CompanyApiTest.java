@@ -5,7 +5,11 @@ import com.afs.restapi.entity.Employee;
 import com.afs.restapi.repository.CompanyRepository;
 import com.afs.restapi.repository.EmployeeRepository;
 import com.afs.restapi.service.dto.CompanyRequest;
+import com.afs.restapi.service.dto.CompanyResponse;
 import com.afs.restapi.service.dto.EmployeeRequest;
+import com.afs.restapi.service.dto.EmployeeResponse;
+import com.afs.restapi.service.mapper.CompanyMapper;
+import com.afs.restapi.service.mapper.EmployeeMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,19 +73,21 @@ class CompanyApiTest {
 
     @Test
     void should_update_company_name() throws Exception {
-        Company previousCompany = companyRepository.save(new Company(null, "Facebook"));
-        Company companyUpdateRequest = new Company(previousCompany.getId(), "Meta");
+        CompanyRequest companyRequest = new CompanyRequest(new Company(null, "Facebook"));
+        Company companyEntity = CompanyMapper.toEntity(companyRequest);
+        CompanyResponse companyResponse = CompanyMapper.toResponse(companyRepository.save(companyEntity));
+        Company companyUpdateRequest = new Company(companyResponse.getId(), "Meta");
         ObjectMapper objectMapper = new ObjectMapper();
-        String updatedEmployeeJson = objectMapper.writeValueAsString(companyUpdateRequest);
-        mockMvc.perform(put("/companies/{id}", previousCompany.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(updatedEmployeeJson))
-                .andExpect(MockMvcResultMatchers.status().is(204));
+        String updatedCompanyJson = objectMapper.writeValueAsString(companyUpdateRequest);
 
-        Optional<Company> optionalCompany = companyRepository.findById(previousCompany.getId());
+        mockMvc.perform(put("/companies/{id}", companyResponse.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updatedCompanyJson))
+                .andExpect(MockMvcResultMatchers.status().is(204));
+        Optional<Company> optionalCompany = companyRepository.findById(companyResponse.getId());
         assertTrue(optionalCompany.isPresent());
         Company updatedCompany = optionalCompany.get();
-        Assertions.assertEquals(previousCompany.getId(), updatedCompany.getId());
+        Assertions.assertEquals(companyResponse.getId(), updatedCompany.getId());
         Assertions.assertEquals(companyUpdateRequest.getName(), updatedCompany.getName());
     }
 

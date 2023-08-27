@@ -1,5 +1,7 @@
 package com.afs.restapi.service.dto;
 
+import com.afs.restapi.entity.Company;
+
 public class CompanyRequest {
 
     private String name;
@@ -9,6 +11,10 @@ public class CompanyRequest {
 
     public CompanyRequest(String name) {
         this.name = name;
+    }
+
+    public CompanyRequest(Company company) {
+        this.name = company.getName();
     }
 
     public String getName() {
