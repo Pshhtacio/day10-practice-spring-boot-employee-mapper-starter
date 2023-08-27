@@ -59,18 +59,15 @@ class CompanyApiTest {
         CompanyRequest companyRequest = new CompanyRequest(new Company(null, "Facebook"));
         Company companyEntity = CompanyMapper.toEntity(companyRequest);
         CompanyResponse companyResponse = CompanyMapper.toResponse(companyRepository.save(companyEntity));
-        Employee employee = employeeRepository.save(getEmployee(companyEntity));
+        EmployeeRequest employeeRequest = new EmployeeRequest(getEmployee(companyEntity));
+        Employee employeeEntity = EmployeeMapper.toEntity(employeeRequest);
+        EmployeeResponse employeeResponse = EmployeeMapper.toResponse(employeeRepository.save(employeeEntity));
 
         mockMvc.perform(get("/companies/{id}", companyResponse.getId()))
                 .andExpect(MockMvcResultMatchers.status().is(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(companyResponse.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(companyResponse.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees.length()").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].id").value(1L))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].name").value(employee.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].age").value(employee.getAge()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].gender").value(employee.getGender()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.employees[0].salary").value(employee.getSalary()));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.employeesCount").value(1));
     }
 
     @Test
