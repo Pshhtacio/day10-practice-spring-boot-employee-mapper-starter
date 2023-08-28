@@ -16,7 +16,7 @@ public class EmployeeRequest {
         this.salary = salary;
         this.companyId = companyId;
     }
-
+    //TODO Constructor not needed
     public EmployeeRequest(Employee employee) {
         this.name = employee.getName();
         this.age = employee.getAge();

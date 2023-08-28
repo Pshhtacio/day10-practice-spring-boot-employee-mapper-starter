@@ -52,6 +52,7 @@ class EmployeeApiTest {
     @Test
     void should_find_employee_by_gender() throws Exception {
         Employee bob = employeeRepository.save(getEmployeeBob());
+        //TODO Remove variable, saving only needed
         Employee susan = employeeRepository.save(getEmployeeSusan());
 
         mockMvc.perform(get("/employees?gender={0}", "Male"))
@@ -119,6 +120,7 @@ class EmployeeApiTest {
     void should_find_employees_by_page() throws Exception {
         Employee bob = employeeRepository.save(getEmployeeBob());
         Employee susan = employeeRepository.save(getEmployeeSusan());
+        //TODO Remove variable, saving only needed
         Employee lily = employeeRepository.save(getEmployeeLily());
 
         mockMvc.perform(get("/employees")

@@ -8,7 +8,7 @@ public class CompanyRequest {
 
     public CompanyRequest() {
     }
-
+    //TODO Contructor not needed
     public CompanyRequest(String name) {
         this.name = name;
     }

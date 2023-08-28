@@ -61,6 +61,7 @@ class CompanyApiTest {
         CompanyResponse companyResponse = CompanyMapper.toResponse(companyRepository.save(companyEntity));
         EmployeeRequest employeeRequest = new EmployeeRequest(getEmployee(companyEntity));
         Employee employeeEntity = EmployeeMapper.toEntity(employeeRequest);
+        //TODO Response not needed here
         EmployeeResponse employeeResponse = EmployeeMapper.toResponse(employeeRepository.save(employeeEntity));
 
         mockMvc.perform(get("/companies/{id}", companyResponse.getId()))
@@ -116,6 +117,7 @@ class CompanyApiTest {
     void should_find_companies_by_page() throws Exception {
         Company oocl = companyRepository.save(getCompanyOOCL());
         Company thoughtworks = companyRepository.save(getCompanyThoughtWorks());
+        //TODO Remove variable, saving only needed
         Company google = companyRepository.save(getCompanyGoogle());
 
         mockMvc.perform(get("/companies")

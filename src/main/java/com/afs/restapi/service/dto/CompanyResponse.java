@@ -1,6 +1,7 @@
 package com.afs.restapi.service.dto;
 
 public class CompanyResponse {
+    //TODO naming convention
     private Long Id;
     private String name;
     private Integer employeesCount;
